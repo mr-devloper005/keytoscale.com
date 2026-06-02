@@ -13,49 +13,49 @@ export const visualPresets = {
   'editorial-paper': {
     label: 'Editorial Paper',
     mood: 'calm magazine authority',
-    fontDirection: 'serif headlines with quiet sans body',
+    fontDirection: 'serif headlines with a polished sans body',
     colors: {
-      background: '#f7efe3',
-      foreground: '#201711',
-      muted: '#7b6253',
-      primary: '#261811',
-      accent: '#b76e45',
-      surface: '#fffaf2',
+      background: '#f7f2ea',
+      foreground: '#10253f',
+      muted: '#5a7288',
+      primary: '#1f77c7',
+      accent: '#7faecc',
+      surface: '#ffffff',
     },
-    shape: 'soft editorial cards with fine borders',
+    shape: 'soft editorial cards with quiet borders',
   },
   'luxury-atelier': {
     label: 'Luxury Atelier',
     mood: 'premium, restrained, polished',
-    fontDirection: 'high-contrast display headings with spacious tracking',
+    fontDirection: 'high-contrast display headings with spaced labels',
     colors: {
-      background: '#0f1110',
-      foreground: '#f6ead8',
-      muted: '#b8aa94',
-      primary: '#d7b56d',
-      accent: '#7f1d1d',
-      surface: '#181a17',
+      background: '#101720',
+      foreground: '#f5ead9',
+      muted: '#b7a88f',
+      primary: '#d9bf8e',
+      accent: '#88afca',
+      surface: '#171f29',
     },
-    shape: 'large dark panels, gold hairlines, generous negative space',
+    shape: 'dark panels, gold lines, and generous negative space',
   },
   'brutalist-index': {
     label: 'Brutalist Index',
     mood: 'bold, raw, memorable',
-    fontDirection: 'condensed headings, mono labels, hard rhythm',
+    fontDirection: 'condensed headings with mono labels',
     colors: {
       background: '#f2f0e8',
       foreground: '#111111',
-      muted: '#55524a',
+      muted: '#5d5a53',
       primary: '#111111',
-      accent: '#ff4d00',
+      accent: '#e85d2a',
       surface: '#ffffff',
     },
-    shape: 'sharp edges, thick borders, offset blocks',
+    shape: 'sharp edges, heavy borders, offset blocks',
   },
   'organic-journal': {
     label: 'Organic Journal',
     mood: 'warm, natural, trustworthy',
-    fontDirection: 'rounded serif or humanist sans with soft captions',
+    fontDirection: 'humanist sans with softer captions',
     colors: {
       background: '#f4efe5',
       foreground: '#263021',
@@ -64,21 +64,21 @@ export const visualPresets = {
       accent: '#c47c51',
       surface: '#fffaf0',
     },
-    shape: 'rounded cards, natural spacing, calm texture',
+    shape: 'rounded cards, calm spacing, soft texture',
   },
   'tech-directory': {
     label: 'Tech Directory',
     mood: 'clean, fast, useful',
-    fontDirection: 'modern sans with crisp mono data accents',
+    fontDirection: 'modern sans with crisp mono accents',
     colors: {
       background: '#f6f9fc',
       foreground: '#101827',
       muted: '#5f6b7a',
       primary: '#0f172a',
-      accent: '#00a6ff',
+      accent: '#2a8de4',
       surface: '#ffffff',
     },
-    shape: 'clean grids, pill filters, sharp information hierarchy',
+    shape: 'clean grids, pill filters, crisp hierarchy',
   },
   'retro-bulletin': {
     label: 'Retro Bulletin',
@@ -119,7 +119,7 @@ export const visualSystem = {
         ? 'editorial-paper'
         : slot4BrandConfig.productKind === 'directory'
           ? 'tech-directory'
-          : 'organic-journal',
+          : 'editorial-paper',
   radius: {
     sm: '0.75rem',
     md: '1.25rem',
@@ -155,3 +155,4 @@ export const visualSystem = {
 export function getVisualPreset(name: Slot4VisualPreset = visualSystem.recommendedPreset as Slot4VisualPreset) {
   return visualPresets[name]
 }
+

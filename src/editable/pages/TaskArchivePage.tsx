@@ -11,6 +11,8 @@ import { taskPageVoices } from '@/editable/content/task-pages.content'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { editableDesignContract as dc, editablePalette as pal } from '@/editable/layouts/design-contract'
 import { ArticleListCard, CompactIndexCard, HorizontalCard, ImageFirstCard, LabelCard, getEditableCategory, getEditableExcerpt, getEditablePostImage, postHref } from '@/editable/cards/PostCards'
+import { Ads } from '@/lib/ads'
+import { toPlainText } from '@/editable/utils/plain-text'
 
 export const revalidate = 3
 
@@ -37,7 +39,7 @@ const getImages = (post: SitePost) => {
 const placeholder = '/placeholder.svg?height=900&width=1200'
 const getImage = (post: SitePost) => getImages(post)[0] || placeholder
 const getCategory = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
-const getSummary = (post: SitePost) => post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || asText(getContent(post).body)
+const getSummary = (post: SitePost) => toPlainText(post.summary || getContent(post).description || getContent(post).excerpt || getContent(post).body)
 const getField = (post: SitePost, keys: string[]) => {
   const content = getContent(post)
   for (const key of keys) {
@@ -151,6 +153,8 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
           </div>
         </section>
 
+
+
         {task === 'sbm' ? (
           <section className="mx-auto max-w-[var(--editable-container)] px-4 pb-10 sm:px-6 lg:px-8">
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 auto-rows-fr">
@@ -175,6 +179,9 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
                   <HorizontalCard key={post.id || post.slug || `${index}`} post={post} href={postHref(task, post, basePath)} index={index} />
                 ))}
               </div>
+               <div className="mx-auto max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
+          <Ads slot="sidebar" showLabel eager className="mx-auto w-full" />
+        </div>
             </div>
           </section>
         )}

@@ -6,6 +6,7 @@ import { taskPageVoices } from '@/editable/content/task-pages.content'
 import { pagesContent } from '@/editable/content/pages.content'
 import { editableDesignContract as dc, editablePalette as pal } from '@/editable/layouts/design-contract'
 import { ArticleListCard, postHref } from '@/editable/cards/PostCards'
+import { toPlainText } from '@/editable/utils/plain-text'
 
 export function EditableArticleArchive({ posts, pagination, category = 'all', basePath = '/article' }: { posts: SitePost[]; pagination: SiteFeedPagination; category?: string; basePath?: string }) {
   const voice = taskPageVoices.article
@@ -69,7 +70,7 @@ export function EditableArticleDetailShell({ slug, post }: { slug: string; post:
       </section>
       <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-6 sm:px-6 lg:px-8 lg:pb-24">
         <div className={`rounded-[2.25rem] border ${pal.border} bg-white p-6 shadow-[0_24px_80px_rgba(24,20,17,0.08)] sm:p-8 lg:p-10`}>
-          <p className={`text-sm leading-8 ${pal.softMutedText}`}>{post?.summary || `Article detail content for ${slug} will render through the editable detail page.`}</p>
+          <p className={`text-sm leading-8 ${pal.softMutedText}`}>{toPlainText(post?.summary) || `Article detail content for ${slug} will render through the editable detail page.`}</p>
         </div>
       </section>
     </main>

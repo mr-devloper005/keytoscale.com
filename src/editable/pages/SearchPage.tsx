@@ -10,6 +10,8 @@ import type { SitePost } from '@/lib/site-connector'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { pagesContent } from '@/editable/content/pages.content'
 import { editableDesignContract as dc } from '@/editable/layouts/design-contract'
+import { Ads } from '@/lib/ads'
+import { toPlainText } from '@/editable/utils/plain-text'
 
 export const revalidate = 3
 
@@ -21,11 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
   })
 }
 
-const stripHtml = (value: string) => value.replace(/<[^>]*>/g, ' ')
-const compactText = (value: unknown) => (typeof value === 'string' ? stripHtml(value).replace(/\s+/g, ' ').trim().toLowerCase() : '')
+const compactText = (value: unknown) => toPlainText(value).toLowerCase()
 const getContent = (post: SitePost) => (post.content && typeof post.content === 'object' ? (post.content as Record<string, unknown>) : {})
-const compactRaw = (value: unknown) => (typeof value === 'string' ? value.trim() : '')
-const summaryOf = (post: SitePost) => post.summary || compactRaw(getContent(post).description) || compactRaw(getContent(post).excerpt) || ''
+const summaryOf = (post: SitePost) => toPlainText(post.summary || getContent(post).description || getContent(post).excerpt)
 
 const matches = (post: SitePost, query: string, category: string, task: string) => {
   const content = getContent(post)
@@ -135,18 +135,23 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
             </Link>
           </div>
 
-          {results.length ? (
-            <div className="mt-6 grid auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {results.map((post, index) => (
-                <SearchResultCard key={post.id || post.slug || `${index}`} post={post} index={index} />
-              ))}
-            </div>
-          ) : (
-            <div className="mt-8 rounded-[2rem] border border-dashed border-[rgba(16,37,63,0.14)] bg-white/70 p-10 text-center shadow-sm">
-              <p className="text-2xl font-black tracking-[-0.04em]">No matching posts found.</p>
-              <p className="mt-3 text-sm font-semibold text-[#567089]">Try a different keyword, task type, or category.</p>
-            </div>
-          )}
+          <div className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+            {results.length ? (
+              <div className="grid auto-rows-fr gap-4 md:grid-cols-2">
+                {results.map((post, index) => (
+                  <SearchResultCard key={post.id || post.slug || `${index}`} post={post} index={index} />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-[2rem] border border-dashed border-[rgba(16,37,63,0.14)] bg-white/70 p-10 text-center shadow-sm">
+                <p className="text-2xl font-black tracking-[-0.04em]">No matching posts found.</p>
+                <p className="mt-3 text-sm font-semibold text-[#567089]">Try a different keyword, task type, or category.</p>
+              </div>
+            )}
+            <aside className="hidden lg:block" aria-label="Sponsored content">
+              <Ads slot="rail" showLabel eager className="sticky top-24 mx-auto w-full" />
+            </aside>
+          </div>
         </section>
       </main>
     </EditableSiteShell>

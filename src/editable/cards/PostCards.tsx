@@ -3,6 +3,7 @@ import { ArrowRight, Clock3, Sparkles } from 'lucide-react'
 import type { SitePost } from '@/lib/site-connector'
 import type { TaskKey } from '@/lib/site-config'
 import { editableDesignContract as dc, editablePalette as pal } from '@/editable/layouts/design-contract'
+import { truncatePlainText } from '@/editable/utils/plain-text'
 
 function postContent(post?: SitePost | null) {
   return post?.content && typeof post.content === 'object' ? (post.content as Record<string, unknown>) : {}
@@ -33,8 +34,7 @@ export function getEditableExcerpt(post?: SitePost | null, limit = 150) {
     (typeof content.summary === 'string' && content.summary) ||
     post?.summary ||
     ''
-  const clean = raw.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
-  return clean.length > limit ? `${clean.slice(0, limit).trim()}...` : clean
+  return truncatePlainText(raw, limit)
 }
 
 export function getEditableCategory(post?: SitePost | null) {

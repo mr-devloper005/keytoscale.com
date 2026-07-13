@@ -9,6 +9,8 @@ import type { SitePost } from '@/lib/site-connector'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { editableDesignContract as dc } from '@/editable/layouts/design-contract'
 import { ArticleListCard, CompactIndexCard, HorizontalCard, ImageFirstCard, LabelCard, getEditableCategory, getEditableExcerpt, getEditablePostImage } from '@/editable/cards/PostCards'
+import { Ads } from '@/lib/ads'
+import { toPlainText } from '@/editable/utils/plain-text'
 
 export const revalidate = 3
 
@@ -99,7 +101,7 @@ const formatPlainText = (raw: string) => {
     .join('')
 }
 
-const summaryText = (post: SitePost) => post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || ''
+const summaryText = (post: SitePost) => toPlainText(post.summary || getContent(post).description || getContent(post).excerpt)
 const categoryOf = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
 const mapSrcFor = (post: SitePost) => {
   const address = getField(post, ['address', 'location', 'city'])
@@ -112,15 +114,17 @@ const mapSrcFor = (post: SitePost) => {
 
 export function TaskDetailView({ task, post, related, comments = [] }: { task: TaskKey; post: SitePost; related: SitePost[]; comments?: Array<{ id: string; name: string; comment: string; createdAt: string }> }) {
   const detailVars = {
-    '--detail-bg': '#f7f2ea',
-    '--detail-text': '#10253f',
-    '--detail-surface': '#ffffff',
-    '--detail-accent': '#1f77c7',
+    '--detail-bg': 'var(--slot4-page-bg)',
+    '--detail-text': 'var(--slot4-page-text)',
+    '--detail-surface': 'var(--slot4-surface-bg)',
+    '--detail-accent': 'var(--slot4-accent)',
   } as CSSProperties
 
   return (
     <EditableSiteShell>
-      <main style={detailVars} className="bg-[var(--detail-bg)] text-[var(--detail-text)]">
+      <main style={detailVars} className="relative overflow-hidden bg-[var(--detail-bg)] text-[var(--detail-text)]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0))]" />
+        <div className="relative">
         {task === 'listing' ? <ListingDetail post={post} related={related} /> : null}
         {task === 'classified' ? <ClassifiedDetail post={post} related={related} /> : null}
         {task === 'image' ? <ImageDetail post={post} related={related} /> : null}
@@ -128,6 +132,10 @@ export function TaskDetailView({ task, post, related, comments = [] }: { task: T
         {task === 'pdf' ? <PdfDetail post={post} related={related} /> : null}
         {task === 'profile' ? <ProfileDetail post={post} related={related} /> : null}
         {task === 'article' ? <ArticleDetail post={post} related={related} comments={comments} /> : null}
+        </div>
+        <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-2 sm:pb-14">
+          <Ads slot="popup" showLabel className="mx-auto w-full" />
+        </div>
       </main>
     </EditableSiteShell>
   )

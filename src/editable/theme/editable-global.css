@@ -37,6 +37,15 @@ body > * {
   z-index: 1;
 }
 
+/* This site does not use the panel-driven full-screen interstitial. */
+body > [role='dialog'][aria-label='Sponsored message'] {
+  display: none !important;
+}
+
+body:has(> [role='dialog'][aria-label='Sponsored message']) {
+  overflow: auto !important;
+}
+
 ::selection {
   background: color-mix(in oklab, var(--slot4-accent-fill) 24%, transparent);
   color: var(--slot4-page-text);
@@ -79,4 +88,3 @@ body > * {
 .article-content p + p {
   margin-top: 1rem;
 }
-
